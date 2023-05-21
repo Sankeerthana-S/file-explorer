@@ -3,10 +3,16 @@ import { legacy_createStore as createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 
-import fileFolderReducer from "./reducer/fileFolderReducer";
+import { folderReducer, chosenFolderReducer } from "./reducer/folderReducer";
+import { fileReducer, chosenFileReducer } from "./reducer/fileReducer";
 
 const store = createStore(
-  combineReducers({ fileFolders: fileFolderReducer }),
+  combineReducers({
+    folderReducer,
+    chosenFolderReducer,
+    fileReducer,
+    chosenFileReducer,
+  }),
   composeWithDevTools(applyMiddleware(thunk))
 );
 

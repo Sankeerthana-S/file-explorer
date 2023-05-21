@@ -1,4 +1,24 @@
 #root {
+  height: 100%;
+  width: 100%;
+}
+
+html, body {
   margin: 0;
-  padding: 0 1rem;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+.card, .card-header {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 2px !important;
+}
+
+.list-btn {
+  width: 100%;
+  text-align: start !important;
+  border-radius: 6px !important;
+  padding-left: 20px;
 }
