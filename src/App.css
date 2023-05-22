@@ -1,4 +1,5 @@
 #root {
+  /* height: 100vh; */
   height: 100%;
   width: 100%;
 }
@@ -16,9 +17,97 @@ html, body {
   padding: 2px !important;
 }
 
+.btn {
+  background-color: #0088ff !important;
+  color: white;
+}
+
 .list-btn {
   width: 100%;
   text-align: start !important;
   border-radius: 6px !important;
   padding-left: 20px;
+  background-color: #bfbfc04e !important;
+  outline: none !important;
+}
+
+.action-tools {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  --bs-btn-color: #212529;
+}
+
+.action-tools .btn:hover {
+  --bs-table-hover-color: #212529;
+}
+
+.progress-bar {
+  color: #0088ff !important;
+  background-color: #0088ff !important;
+}
+
+.folder-view {
+  border-radius: 15px !important;
+  overflow-y: hidden;
+  height: 100%;
+}
+
+.folder-view-scroll {
+  position: relative;
+  overflow-y: scroll;
+  height: 85%;
+}
+
+.folder-view-scroll::-webkit-scrollbar {
+  width: 4px; 
+  scroll-behavior: smooth;
+}
+
+.folder-view-scroll::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 4px; 
+}
+
+.folder-view-scroll::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.table-light {
+  --bs-table-bg: white !important;
+}
+
+.folder-image {
+  width: 60px !important;
+}
+
+.list-item {
+  width: 100% !important;
+  text-align: left;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.spinner-grow { 
+  --bs-spinner-width: 6rem !important;
+  --bs-spinner-height: 6rem  !important;
+  --bs-spinner-animation-speed: 1s !important;
+  background-color: #0088ff78 !important;
+}
+
+.popover-body {
+  padding: 0 !important;
+  width: 200px !important;
+}
+
+.popover-arrow {
+  display: none !important;
+}
+
+.list-group {
+  --bs-list-group-border-color: transparent !important;
+  --bs-list-group-active-bg: #0d6efd;
+  --bs-list-group-action-hover-color: #212529 !important;
+  --bs-list-group-action-hover-bg: #d8d8d9 !important;
 }

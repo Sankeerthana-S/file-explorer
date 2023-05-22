@@ -34,7 +34,7 @@ export const createFolder = (data) => (dispatch) => {
       const folderData = (await folder.get()).data();
       folderData.path[folderData.path.length - 1].id = folder.id;
       dispatch(addFolder({ ...folderData, id: folder.id }));
-      dispatch(updateFolderPath(folder.id, folderData));
+      dispatch(updateFolder(folder.id, folderData));
     });
 };
 
@@ -54,7 +54,7 @@ export const fetchFolders = () => (dispatch) => {
     });
 };
 
-export const updateFolderPath = (folderId, data) => () => {
+export const updateFolder = (folderId, data) => () => {
   firebaseApp.firestore().collection("folders").doc(folderId).update(data);
 };
 

@@ -9,7 +9,7 @@ import { AccordionContext} from "react-bootstrap";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 import { updateFolderDetails } from '../../../../redux/actionCreator/folderActionCreator';
-
+import { fetchFiles } from '../../../../redux/actionCreator/fileActionCreator';
 
 function ListViewComponent({folder, allFolders, eventKey, callback}) {
   const dispatch = useDispatch();
@@ -26,8 +26,8 @@ function ListViewComponent({folder, allFolders, eventKey, callback}) {
   const handleClick = useCallback((folder)=> {
     const {id, name, path} = folder;
     dispatch(updateFolderDetails({id, name, path, subFolders}))
+    dispatch(fetchFiles(id))
   })
-
 
   return (
     <>
@@ -36,21 +36,22 @@ function ListViewComponent({folder, allFolders, eventKey, callback}) {
         <button
           type="button"
           className='btn list-btn'
-          style={{ backgroundColor: isCurrentEventKey ? '#a6ccff' : '#edf0f5' }}
           onClick={() => {decoratedOnClick(); handleClick(folder);}}>
             {
               (isCurrentEventKey) ? 
                 <Icon.CaretDownFill size={20} className="pb-1 pe-2"/> : 
                 <Icon.CaretRightFill size={20} className="pb-1 pe-2"/>
             }
-          
-          {folder.name}
+            {
+              folder.name === 'My Drive' && 
+              <Icon.BoxFill size={25} className="pb-1 pe-2"/> 
+            }
+            {folder.name}
         </button>
         :
         <button
           type="button"
           className='btn list-btn'
-          style={{ backgroundColor: isCurrentEventKey ? '#a6ccff' : '#edf0f5' }}
           onClick={() => {decoratedOnClick(); handleClick(folder);}}>
           {folder.name}
         </button>

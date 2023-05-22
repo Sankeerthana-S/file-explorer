@@ -15,17 +15,17 @@ const FolderListComponent = ({ folders, parent }) => {
       {
         sortedItems.map((folder, index) => {
           return (
-            <Card key={folder.id + index}>
-              <Card.Header>
-                <ListViewComponent eventKey={index} folder={folder} allFolders={folders}></ListViewComponent>
-              </Card.Header>
-              <Accordion.Collapse eventKey={index} className="ps-4">
-                <FolderListComponent folders={folders} parent={folder.name}/>
-              </Accordion.Collapse>
-            </Card>
+              <Card key={folder.id + index}>
+                <Card.Header key={folder.id + '-header'}>
+                  <ListViewComponent eventKey={index} folder={folder} allFolders={folders}></ListViewComponent>
+                </Card.Header>
+                <Accordion.Collapse eventKey={index} className="ps-4">
+                  <FolderListComponent folders={folders} parent={folder.name}/>
+                </Accordion.Collapse>
+              </Card>
             );
-            })
-        }
+          })
+      }
       </Accordion>
     }
     </>

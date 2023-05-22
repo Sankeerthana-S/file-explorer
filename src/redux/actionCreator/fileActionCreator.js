@@ -11,11 +11,6 @@ const getFiles = (payload) => ({
   payload,
 });
 
-const setLoading = (payload) => ({
-  type: types.SET_LOADING,
-  payload,
-});
-
 export const uploadFile = (data) => (dispatch) => {
   firebaseApp
     .firestore()
@@ -23,12 +18,11 @@ export const uploadFile = (data) => (dispatch) => {
     .add(data)
     .then(async (file) => {
       const fileData = (await file.get()).data();
-      dispatch(addFile({ ...fileData, id: file.id }));
+      dispatch(addFile(fileData));
     });
 };
 
-export const fetchFiles = () => (dispatch) => {
-  dispatch(setLoading(true));
+export const fetchFiles = (folderId) => (dispatch) => {
   firebaseApp
     .firestore()
     .collection("files")
@@ -38,9 +32,36 @@ export const fetchFiles = () => (dispatch) => {
         ...file.data(),
         id: file.id,
       }));
-      dispatch(getFiles(filesData));
-      dispatch(setLoading(false));
-    });
+      const filteredData = filesData.filter(
+        (file) => file.folderId === folderId && !file.isDeleted
+      );
+      dispatch(getFiles(filteredData));
+    })
+    .catch((err) => console.error(err));
+};
+
+export const fetchDeletedFiles = () => (dispatch) => {
+  firebaseApp
+    .firestore()
+    .collection("files")
+    .get()
+    .then((files) => {
+      const filesData = files.docs.map((file) => ({
+        ...file.data(),
+        id: file.id,
+      }));
+      const filteredData = filesData.filter((file) => file.isDeleted);
+      dispatch(getFiles(filteredData));
+    })
+    .catch((err) => console.error(err));
+};
+
+export const deleteFile = (fileId) => () => {
+  firebaseApp.firestore().collection("files").doc(fileId).delete();
+};
+
+export const updateFile = (fileId, data) => () => {
+  firebaseApp.firestore().collection("files").doc(fileId).update(data);
 };
 
 export default uploadFile;
