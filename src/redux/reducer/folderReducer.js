@@ -17,7 +17,7 @@ const folderReducer = (state = initialState, action) => {
     case types.GET_FOLDERS:
       return {
         ...state,
-        folders: [...state.folders, ...action.payload],
+        folders: [...action.payload],
       };
     case types.CREATE_FOLDER:
       return {

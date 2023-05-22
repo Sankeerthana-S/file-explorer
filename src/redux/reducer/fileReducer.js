@@ -1,7 +1,6 @@
 import * as types from "../actionTypes/fileActionTypes";
 
 const initialState = {
-  isLoading: true,
   files: [],
 };
 
@@ -9,6 +8,8 @@ const loadState = {
   id: "",
   name: "",
   url: "",
+  isDeleted: false,
+  lastModified: null,
 };
 
 const fileReducer = (state = initialState, action) => {
@@ -16,17 +17,17 @@ const fileReducer = (state = initialState, action) => {
     case types.GET_FILES:
       return {
         ...state,
-        files: [...state.files, ...action.payload],
+        files: [...action.payload],
       };
     case types.UPLOAD_FILE:
       return {
         ...state,
         files: [...state.files, action.payload],
       };
-    case types.SET_LOADING:
+    case types.DELETE_FILE:
       return {
         ...state,
-        isLoading: action.payload,
+        deletedAt: action.payload,
       };
     default:
       return state;

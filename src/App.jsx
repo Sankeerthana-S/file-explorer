@@ -6,7 +6,7 @@ import MainPanelComponent from './components/MainPanel/MainPanel.component';
 
 function App() {
   return (
-    <div className='h-100'>
+    <div className='h-75'>
       <div className='row'>
         <ActivityBarComponent />
       </div>
