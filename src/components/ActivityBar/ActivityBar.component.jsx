@@ -52,6 +52,7 @@ const ActivityBarComponent = () => {
       name: folderName,
       parent: name,
       path: createPath,
+      isDeleted: false
     };
     dispatch(createFolder(data));
     handleClose('folder');
@@ -65,9 +66,13 @@ const ActivityBarComponent = () => {
     const payload = {
       url: '',
       folderId: id,
+      size: file.size,
       name: file.name,
       type: file.type,
       uploadedAt: new Date(),
+      lastAccessed: null,
+      lastModified: null,
+      isDeleted: false
     }
 
     uploadFileTask.on("state_changed",
@@ -104,21 +109,8 @@ const ActivityBarComponent = () => {
             <Button className="mx-2" variant="primary" onClick={() => {handleShow('file')}}>
               <Icon.Upload size={20} className="me-2 mb-1"/>
               Upload File
-            </Button>{" "}
-            {/* <Button className="mx-1" variant="success">
-              Success
-            </Button>{" "} */}
+            </Button>
           </Nav>
-          {/* <Nav>
-            <Form className="d-flex me-3">
-              <Form.Control
-                type="text"
-                className="me-2"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </Form>
-          </Nav> */}
         </Navbar>
       </Container>
 

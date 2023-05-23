@@ -47,16 +47,12 @@ html, body {
   background-color: #0088ff !important;
 }
 
-.folder-view {
-  border-radius: 15px !important;
-  overflow-y: hidden;
-  height: 100%;
-}
-
 .folder-view-scroll {
+  border-radius: 15px !important;
   position: relative;
   overflow-y: scroll;
-  height: 85%;
+  max-height: calc(100vh - 150px);
+  min-height: calc(100vh - 150px);
 }
 
 .folder-view-scroll::-webkit-scrollbar {
@@ -105,9 +101,24 @@ html, body {
   display: none !important;
 }
 
+.popover-btn {
+  padding: 0 !important;
+  height: 40px !important;
+  padding-left: 20px !important;
+}
+
 .list-group {
   --bs-list-group-border-color: transparent !important;
   --bs-list-group-active-bg: #0d6efd;
   --bs-list-group-action-hover-color: #212529 !important;
   --bs-list-group-action-hover-bg: #d8d8d9 !important;
+}
+
+.fs-14 {
+  font-size: 14px !important;
+  font-weight: normal !important;
+}
+
+.bg-load {
+  background-color: #00d9ff2c !important;
 }

@@ -25,6 +25,15 @@ const getFolderDetails = () => ({
   type: types.FETCH_FOLDER_DETAILS,
 });
 
+const setTempFolderDetails = (payload) => ({
+  type: types.SET_TEMP_FOLDER_DETAILS,
+  payload,
+});
+
+const getTempFolderDetails = () => ({
+  type: types.FETCH_TEMP_FOLDER_DETAILS,
+});
+
 export const createFolder = (data) => (dispatch) => {
   firebaseApp
     .firestore()
@@ -49,12 +58,20 @@ export const fetchFolders = () => (dispatch) => {
         ...folder.data(),
         id: folder.id,
       }));
-      dispatch(getFolders(foldersData));
+      const filteredData = foldersData.filter((folder) => !folder.isDeleted);
+      const deletedFolders = foldersData.filter((folder) => folder.isDeleted);
+
+      dispatch(getFolders({ folders: filteredData, deletedFolders }));
       dispatch(setLoading(false));
     });
 };
 
+export const deleteFolder = (folderId) => () => {
+  firebaseApp.firestore().collection("folders").doc(folderId).delete();
+};
+
 export const updateFolder = (folderId, data) => () => {
+  console.log("sending", data);
   firebaseApp.firestore().collection("folders").doc(folderId).update(data);
 };
 
@@ -64,6 +81,14 @@ export const updateFolderDetails = (data) => (dispatch) => {
 
 export const fetchFolderDetails = () => (dispatch) => {
   dispatch(getFolderDetails());
+};
+
+export const updateTempFolderDetails = (data) => (dispatch) => {
+  dispatch(setTempFolderDetails(data));
+};
+
+export const fetchTempFolderDetails = () => (dispatch) => {
+  dispatch(getTempFolderDetails());
 };
 
 export default createFolder;

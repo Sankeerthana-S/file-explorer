@@ -53,7 +53,7 @@ const MainPanelComponent = () =>{
         <div className="row mx-2">
           <div className="col-2 ps-0">
             <Link to="/">
-              { (folders && folders.length > 0) && <FolderListComponent folders={folders} parent=""/> }
+              { (folders && folders.length > 0) && <FolderListComponent folders={folders} parent="" type="sidebar"/> }
             </Link>             
             <Link to="/bin">
               <Card key='trash'>

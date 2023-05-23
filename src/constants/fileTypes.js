@@ -5,6 +5,14 @@ export const imageFiles = [
   "image/webp",
 ];
 
-export const csvFiles = ["text/csv"];
+export const csvFiles = [
+  "text/csv",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+];
 
-export const textFiles = ["application/pdf"];
+export const textFiles = [
+  "application/pdf",
+  "text/plain",
+  "application/vnd.oasis.opendocument.text",
+];

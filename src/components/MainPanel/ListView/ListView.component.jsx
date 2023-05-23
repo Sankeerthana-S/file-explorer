@@ -8,10 +8,10 @@ import * as Icon from "react-bootstrap-icons";
 import { AccordionContext} from "react-bootstrap";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
-import { updateFolderDetails } from '../../../../redux/actionCreator/folderActionCreator';
-import { fetchFiles } from '../../../../redux/actionCreator/fileActionCreator';
+import { updateFolderDetails, updateTempFolderDetails } from '../../../redux/actionCreator/folderActionCreator';
+import { fetchFiles } from '../../../redux/actionCreator/fileActionCreator';
 
-function ListViewComponent({folder, allFolders, eventKey, callback}) {
+function ListViewComponent({folder, allFolders, eventKey, type, callback}) {
   const dispatch = useDispatch();
   const { activeEventKey } = useContext(AccordionContext);
 
@@ -25,8 +25,12 @@ function ListViewComponent({folder, allFolders, eventKey, callback}) {
 
   const handleClick = useCallback((folder)=> {
     const {id, name, path} = folder;
-    dispatch(updateFolderDetails({id, name, path, subFolders}))
-    dispatch(fetchFiles(id))
+    if(type === 'sidebar') {
+      dispatch(updateFolderDetails({id, name, path, subFolders}))
+      dispatch(fetchFiles(id))
+    } else {
+      dispatch(updateTempFolderDetails({id, name, path}))
+    }
   })
 
   return (
@@ -64,7 +68,8 @@ ListViewComponent.propTypes = {
   folder: PropTypes.any,
   allFolders: PropTypes.any,
   eventKey: PropTypes.any.isRequired,
-  callback: PropTypes.func
+  type: PropTypes.string,
+  callback: PropTypes.func,
 };
 
 export default ListViewComponent;

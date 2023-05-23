@@ -3,6 +3,7 @@ import * as types from "../actionTypes/folderActionTypes";
 const initialState = {
   isLoading: true,
   folders: [],
+  deletedFolders: [],
 };
 
 const loadState = {
@@ -17,7 +18,8 @@ const folderReducer = (state = initialState, action) => {
     case types.GET_FOLDERS:
       return {
         ...state,
-        folders: [...action.payload],
+        folders: [...(action.payload.folders || [])],
+        deletedFolders: [...(action.payload.deletedFolders || [])],
       };
     case types.CREATE_FOLDER:
       return {
@@ -46,8 +48,25 @@ const chosenFolderReducer = (state = loadState, action) => {
         path,
         subFolders,
       };
-    } else return state;
-  } else return state;
+    } else if (action.type === types.FETCH_FOLDER_DETAILS) return state;
+  }
+  return state;
 };
 
-export { folderReducer, chosenFolderReducer };
+const tempChoosenFolderReducer = (state = loadState, action) => {
+  if (action.payload) {
+    const { id, name, path } = action.payload;
+
+    if (action.type === types.SET_TEMP_FOLDER_DETAILS) {
+      return {
+        ...state,
+        id,
+        name,
+        path,
+      };
+    } else if (action.type === types.FETCH_TEMP_FOLDER_DETAILS) return state;
+  }
+  return state;
+};
+
+export { folderReducer, chosenFolderReducer, tempChoosenFolderReducer };

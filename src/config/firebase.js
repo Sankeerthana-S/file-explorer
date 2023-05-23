@@ -3,12 +3,14 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDhdN3kJ0XXm4jK-NIwIECsJrOf2UppTo0",
-  authDomain: "file-explorer-25e8b.firebaseapp.com",
-  projectId: "file-explorer-25e8b",
-  storageBucket: "file-explorer-25e8b.appspot.com",
-  messagingSenderId: "619508694057",
-  appId: "1:619508694057:web:62d476834dbeeca7f33038",
+  apiKey: import.meta.env.DEV ? import.meta.env.VITE_API_KEY : "",
+  authDomain: import.meta.env.DEV ? import.meta.env.VITE_AUTH_DOMAIN : "",
+  projectId: import.meta.env.DEV ? import.meta.env.VITE_PROJECT_ID : "",
+  storageBucket: import.meta.env.DEV ? import.meta.env.VITE_STORAGE_BUCKET : "",
+  messagingSenderId: import.meta.env.DEV
+    ? import.meta.env.VITE_MESSAGING_SENDER_ID
+    : "",
+  appId: import.meta.env.DEV ? import.meta.env.VITE_APP_ID : "",
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
