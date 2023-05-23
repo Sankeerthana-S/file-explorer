@@ -111,6 +111,9 @@ const ActivityBarComponent = () => {
               Upload File
             </Button>
           </Nav>
+          <Nav>
+            <div className="h4 me-4">File Explorer</div>
+          </Nav>
         </Navbar>
       </Container>
 
