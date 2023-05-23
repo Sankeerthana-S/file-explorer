@@ -8,6 +8,7 @@ const loadState = {
   id: "",
   name: "",
   url: "",
+  size: "",
   isDeleted: false,
   lastModified: null,
 };
