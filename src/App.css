@@ -122,3 +122,9 @@ html, body {
 .bg-load {
   background-color: #00d9ff2c !important;
 }
+
+.pe-stroke {
+  cursor: pointer;
+  text-decoration: none;
+  color: black
+}

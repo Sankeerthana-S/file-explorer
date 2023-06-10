@@ -11,6 +11,11 @@ const getFiles = (payload) => ({
   payload,
 });
 
+const setLoading = (payload) => ({
+  type: types.SET_LOADING,
+  payload,
+});
+
 export const uploadFile = (data) => (dispatch) => {
   firebaseApp
     .firestore()
@@ -23,6 +28,7 @@ export const uploadFile = (data) => (dispatch) => {
 };
 
 export const fetchFiles = (folderId) => (dispatch) => {
+  dispatch(setLoading(true));
   firebaseApp
     .firestore()
     .collection("files")
@@ -36,11 +42,13 @@ export const fetchFiles = (folderId) => (dispatch) => {
         (file) => file.folderId === folderId && !file.isDeleted
       );
       dispatch(getFiles(filteredData));
+      dispatch(setLoading(false));
     })
     .catch((err) => console.error(err));
 };
 
 export const fetchDeletedFiles = () => (dispatch) => {
+  // dispatch(setLoading(true));
   firebaseApp
     .firestore()
     .collection("files")
@@ -52,6 +60,7 @@ export const fetchDeletedFiles = () => (dispatch) => {
       }));
       const filteredData = filesData.filter((file) => file.isDeleted);
       dispatch(getFiles(filteredData));
+      // dispatch(setLoading(false));
     })
     .catch((err) => console.error(err));
 };

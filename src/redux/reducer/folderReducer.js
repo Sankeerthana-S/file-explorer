@@ -2,6 +2,8 @@ import * as types from "../actionTypes/folderActionTypes";
 
 const initialState = {
   isLoading: true,
+  isPageLoading: true,
+  activeFolderId: "",
   folders: [],
   deletedFolders: [],
 };
@@ -30,6 +32,16 @@ const folderReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload,
+      };
+    case types.SET_PAGE_LOADING:
+      return {
+        ...state,
+        isPageLoading: action.payload,
+      };
+    case types.SET_ACTIVE_FOLDER_ID:
+      return {
+        ...state,
+        activeFolderId: action.payload,
       };
     default:
       return state;

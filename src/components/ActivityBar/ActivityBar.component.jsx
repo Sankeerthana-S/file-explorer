@@ -7,26 +7,39 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Button, Modal, Navbar, Nav, Container, Form } from "react-bootstrap";
 
 import firebaseApp from "../../config/firebase";
-import { createFolder, fetchFolderDetails } from "../../redux/actionCreator/folderActionCreator";
+import { createFolder } from "../../redux/actionCreator/folderActionCreator";
 import uploadFile from "../../redux/actionCreator/fileActionCreator";
 import { csvFiles, imageFiles, textFiles } from "../../constants/fileTypes";
 
 const ActivityBarComponent = () => {
   const dispatch = useDispatch();
   const storage = getStorage(firebaseApp);
-  const acceptFiles = [...imageFiles, ...textFiles, ...csvFiles];
+  const acceptFiles = [ ...imageFiles, ...textFiles, ...csvFiles ];
 
-  const [file, setFile] = useState(null);
-  const [folderName, setFolderName] = useState("");
-  const [progresspercent, setProgresspercent] = useState(0);
-  const [showFolderModal, setShowFolderModal] = useState(false);
-  const [showFileModal, setShowFileModal] = useState(false);
+  const [ file, setFile] = useState(null);
+  const [ folderName, setFolderName] = useState("");
+  const [ parentFolderName, setParentFolderName ] = useState("");
+  const [ parentFolderPath, setParentFolderPath ] = useState([]);
+  const [ progresspercent, setProgresspercent ] = useState(0);
+  const [ showFolderModal, setShowFolderModal ] = useState(false);
+  const [ showFileModal, setShowFileModal ] = useState(false);
 
-  const {id, name, path } = useSelector((state) => ({
-    id: state.chosenFolderReducer.id,
-    name: state.chosenFolderReducer.name,
-    path: state.chosenFolderReducer.path
+  const {parentFolderId, folders } = useSelector((state) => ({
+    parentFolderId: state.folderReducer.activeFolderId,
+    folders: state.folderReducer.folders,
   }), shallowEqual);
+
+
+  useEffect(() => {
+    if(folders.length > 0) {
+      const parentFolder = folders.find((folder) => folder.id === parentFolderId);
+
+      if(parentFolder) {
+        setParentFolderName(parentFolder.name)
+        setParentFolderPath(parentFolder.path)
+      }
+    } 
+  }, [parentFolderId, folders.length, dispatch ])
 
   const handleClose = useCallback((type) => {
     if(type === 'folder')setShowFolderModal(false)
@@ -44,16 +57,17 @@ const ActivityBarComponent = () => {
   })
 
   const folderModalSubmit = useCallback(() => {
-    const createPath = [...path, {id: '', name: folderName}];
+    const createPath = [...parentFolderPath, {id: '', name: folderName}];
     const data = {
       createdAt: new Date(),
       lastModified: null,
       lastAccessed: null,
       name: folderName,
-      parent: name,
+      parent: parentFolderId,
       path: createPath,
       isDeleted: false
     };
+
     dispatch(createFolder(data));
     handleClose('folder');
   });
@@ -65,7 +79,7 @@ const ActivityBarComponent = () => {
     const uploadFileTask = uploadBytesResumable(storageRef, file);
     const payload = {
       url: '',
-      folderId: id,
+      folderId: parentFolderId,
       size: file.size,
       name: file.name,
       type: file.type,
@@ -93,9 +107,6 @@ const ActivityBarComponent = () => {
     );
   })
 
-  useEffect(() => {
-    dispatch(fetchFolderDetails());
-  }, [id, name ])
 
   return (
     <>
@@ -119,7 +130,7 @@ const ActivityBarComponent = () => {
 
       <Modal show={showFolderModal} backdrop="static" onHide={() => {handleClose('folder')}}>
         <Modal.Header closeButton>
-          <Modal.Title>Create Folder in {name}</Modal.Title>
+          <Modal.Title>Create Folder in {parentFolderName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form className="d-flex">
@@ -141,7 +152,7 @@ const ActivityBarComponent = () => {
 
       <Modal show={showFileModal} backdrop="static" onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Upload file to {name}</Modal.Title>
+          <Modal.Title>Upload file to {parentFolderName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form className="d-flex">

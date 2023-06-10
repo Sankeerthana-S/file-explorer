@@ -4,7 +4,7 @@ import { Accordion, Card } from "react-bootstrap";
 import ListViewComponent from "../ListView/ListView.component";
 
 const FolderListComponent = ({ folders, parent, type, removeFolderId }) => {
-  const filteredList = folders.filter((folder) => folder.parent === parent)
+  const filteredList = [...new Set(folders.filter((folder) => folder.parent === parent))];
   const sortedItems = filteredList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
   
   return (
@@ -16,12 +16,12 @@ const FolderListComponent = ({ folders, parent, type, removeFolderId }) => {
         sortedItems.map((folder, index) => {
           if(folder.id !== removeFolderId) {
             return (
-              <Card key={folder.name + index}>
+              <Card key={folder.id + '-card'}>
                 <Card.Header key={folder.id + '-header'}>
                   <ListViewComponent eventKey={index} folder={folder} allFolders={folders} type={type}></ListViewComponent>
                 </Card.Header>
                 <Accordion.Collapse eventKey={index} className="ps-4">
-                  <FolderListComponent folders={folders} parent={folder.name} type={type} removeFolderId={removeFolderId}/>
+                  <FolderListComponent folders={folders} parent={folder.id} type={type} removeFolderId={removeFolderId}/>
                 </Accordion.Collapse>
               </Card>
               );

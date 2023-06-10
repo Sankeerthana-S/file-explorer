@@ -16,13 +16,14 @@ const setLoading = (payload) => ({
   payload,
 });
 
-const setFolderDetails = (payload) => ({
-  type: types.SET_FOLDER_DETAILS,
+const setPageLoading = (payload) => ({
+  type: types.SET_PAGE_LOADING,
   payload,
 });
 
-const getFolderDetails = () => ({
-  type: types.FETCH_FOLDER_DETAILS,
+const setActiveFolderId = (payload) => ({
+  type: types.SET_ACTIVE_FOLDER_ID,
+  payload,
 });
 
 const setTempFolderDetails = (payload) => ({
@@ -44,6 +45,7 @@ export const createFolder = (data) => (dispatch) => {
       folderData.path[folderData.path.length - 1].id = folder.id;
       dispatch(addFolder({ ...folderData, id: folder.id }));
       dispatch(updateFolder(folder.id, folderData));
+      dispatch(setActiveFolderId(folder.id));
     });
 };
 
@@ -66,21 +68,20 @@ export const fetchFolders = () => (dispatch) => {
     });
 };
 
+export const setPageLoader = (isLoading) => (dispatch) => {
+  dispatch(setPageLoading(isLoading));
+};
+
 export const deleteFolder = (folderId) => () => {
   firebaseApp.firestore().collection("folders").doc(folderId).delete();
 };
 
 export const updateFolder = (folderId, data) => () => {
-  console.log("sending", data);
   firebaseApp.firestore().collection("folders").doc(folderId).update(data);
 };
 
-export const updateFolderDetails = (data) => (dispatch) => {
-  dispatch(setFolderDetails(data));
-};
-
-export const fetchFolderDetails = () => (dispatch) => {
-  dispatch(getFolderDetails());
+export const setActiveFolder = (folderId) => (dispatch) => {
+  dispatch(setActiveFolderId(folderId));
 };
 
 export const updateTempFolderDetails = (data) => (dispatch) => {

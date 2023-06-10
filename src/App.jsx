@@ -1,15 +1,21 @@
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import './App.css';
 
 import ActivityBarComponent from './components/ActivityBar/ActivityBar.component';
 import MainPanelComponent from './components/MainPanel/MainPanel.component';
-import { useState, useEffect } from 'react';
+
+import { setActiveFolder } from './redux/actionCreator/folderActionCreator';
 
 function App() {
+  const dispatch = useDispatch();
   const [windowSize, setWindowSize] = useState([
     window.innerWidth,
     window.innerHeight,
   ]);
+
+  const mainCollectionId = import.meta.env.DEV ? import.meta.env.VITE_MAIN_COLLECTION_ID : "";
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -21,6 +27,10 @@ function App() {
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
+  }, []);
+
+  useEffect(() => {
+    dispatch(setActiveFolder(mainCollectionId));
   }, []);
 
   return (

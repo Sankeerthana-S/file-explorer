@@ -8,7 +8,7 @@ import * as Icon from "react-bootstrap-icons";
 import { AccordionContext} from "react-bootstrap";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
-import { updateFolderDetails, updateTempFolderDetails } from '../../../redux/actionCreator/folderActionCreator';
+import { setActiveFolder, updateTempFolderDetails } from '../../../redux/actionCreator/folderActionCreator';
 import { fetchFiles } from '../../../redux/actionCreator/fileActionCreator';
 
 function ListViewComponent({folder, allFolders, eventKey, type, callback}) {
@@ -16,7 +16,7 @@ function ListViewComponent({folder, allFolders, eventKey, type, callback}) {
   const { activeEventKey } = useContext(AccordionContext);
 
   const isCurrentEventKey = activeEventKey === eventKey;
-  const subFolders = allFolders.filter((listFolder) => listFolder.parent === folder.name);
+  const subFolders = allFolders.filter((listFolder) => listFolder.parent === folder.id);
 
   const decoratedOnClick = useAccordionButton(
     eventKey,
@@ -26,7 +26,7 @@ function ListViewComponent({folder, allFolders, eventKey, type, callback}) {
   const handleClick = useCallback((folder)=> {
     const {id, name, path} = folder;
     if(type === 'sidebar') {
-      dispatch(updateFolderDetails({id, name, path, subFolders}))
+      dispatch(setActiveFolder(id))
       dispatch(fetchFiles(id))
     } else {
       dispatch(updateTempFolderDetails({id, name, path}))
@@ -47,7 +47,7 @@ function ListViewComponent({folder, allFolders, eventKey, type, callback}) {
                 <Icon.CaretRightFill size={20} className="pb-1 pe-2"/>
             }
             {
-              folder.name === 'My Drive' && 
+              folder.parent === '' && 
               <Icon.BoxFill size={25} className="pb-1 pe-2"/> 
             }
             {folder.name}

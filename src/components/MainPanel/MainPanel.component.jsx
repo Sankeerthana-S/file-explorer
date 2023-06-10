@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import { fetchFiles } from "../../redux/actionCreator/fileActionCreator";
-import { fetchFolders, updateFolderDetails } from "../../redux/actionCreator/folderActionCreator";
+import { fetchFolders, setPageLoader } from "../../redux/actionCreator/folderActionCreator";
 
 import  { Spinner, Card} from 'react-bootstrap';
 import * as Icon from "react-bootstrap-icons";
@@ -14,34 +14,29 @@ import ViewTrashComponent from "./Trash/ViewTrash.component";
 
 const MainPanelComponent = () =>{
   const dispatch = useDispatch();
-  const [currentFolderId, setCurrentFolderId] = useState('')
 
-  const {id, isLoading, folders} = useSelector((state) => ({
-    id: state.chosenFolderReducer.id,
-    isLoading: state.folderReducer.isLoading,
+  const {activeFolderId, isPageLoading, folders} = useSelector((state) => ({
+    activeFolderId: state.folderReducer.activeFolderId,
+    isPageLoading: state.folderReducer.isPageLoading,
     folders: state.folderReducer.folders,
   }), shallowEqual);
 
   useEffect(() => {
-    if(isLoading) {
+    if(isPageLoading) {
       dispatch(fetchFolders());
+
+      if(folders.length > 0) dispatch(setPageLoader(!isPageLoading))
     } 
-    else {
-      const root = folders.find((folder) => folder.parent === '');
-      const subFolders = folders.filter((folder) => folder.parent === root.name);
-      setCurrentFolderId(root.id)
-      dispatch(updateFolderDetails({id: root.id, name: root.name, path: root.path, subFolders}));
-    }
-  }, [isLoading, folders.length, dispatch]);
+  }, [isPageLoading, activeFolderId, folders.length, dispatch]);
 
   useEffect(() => {
-    if(id !== currentFolderId) dispatch(fetchFiles(id))
-  }, [id])
+    dispatch(fetchFiles(activeFolderId))
+  }, [activeFolderId])
 
   return (
     <>
     {
-      isLoading ? 
+      isPageLoading ? 
       <div className="m-auto text-center">
         <Spinner animation="grow" size={40}>
           <span className="visually-hidden">Loading...</span>

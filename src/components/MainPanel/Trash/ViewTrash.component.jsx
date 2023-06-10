@@ -72,6 +72,7 @@ const ViewTrashComponent = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchFolders())
     dispatch(fetchDeletedFiles());
   }, [files.length, deletedFolders.length]);
 
